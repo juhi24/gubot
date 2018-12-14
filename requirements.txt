@@ -1,1 +1,2 @@
 python-telegram-bot==8.1.1
+git+git://github.com/juhi24/gupy@master#egg=gupy

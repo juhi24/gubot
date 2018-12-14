@@ -45,16 +45,15 @@ def webhook(event, context):
     bot = configure_telegram()
     logger.info('Event: {}'.format(event))
 
-    if event.get('httpMethod') == 'POST' and event.get('body'): 
+    if event.get('httpMethod') == 'POST' and event.get('body'):
         logger.info('Message received')
         update = telegram.Update.de_json(json.loads(event.get('body')), bot)
         chat_id = update.message.chat.id
         text = update.message.text
 
         if text == '/start':
-            text = """Hello, human! I am an echo bot, built with Python and the Serverless Framework.
-            You can take a look at my source code here: https://github.com/jonatasbaldin/serverless-telegram-bot.
-            If you have any issues, please drop a tweet to my creator: https://twitter.com/jonatsbaldin. Happy botting!"""
+            text = """Hello, human! I am Ares Peacemaker, the messenger between
+            you and the gods."""
 
         bot.sendMessage(chat_id=chat_id, text=text)
         logger.info('Message sent')
