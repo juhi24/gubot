@@ -2,8 +2,7 @@ service: serverless-telegram-bot
 
 provider:
   name: aws
-  runtime: python3.6
-  profile: ckl
+  runtime: python3.7
   environment:
     TELEGRAM_TOKEN: ${file(./serverless.env.yml):TELEGRAM_TOKEN, ''}
 

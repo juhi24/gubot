@@ -106,5 +106,8 @@ venv.bak/
 # nodejs
 node_modules/
 
+# serverless
+.serverless/
+
 # private
 serverless.env.yml
