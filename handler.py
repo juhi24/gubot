@@ -1,7 +1,10 @@
 import json
 import telegram
+from telegram.ext import Dispatcher
 import os
 import logging
+
+#import gupy
 
 
 # Logging is cool!
@@ -34,7 +37,9 @@ def configure_telegram():
         logger.error('The TELEGRAM_TOKEN must be set')
         raise NotImplementedError
 
-    return telegram.Bot(TELEGRAM_TOKEN)
+    bot = telegram.Bot(TELEGRAM_TOKEN)
+    #dispatcher = Dispatcher(bot, None, workers=0)
+    return bot
 
 
 def webhook(event, context):
@@ -52,8 +57,10 @@ def webhook(event, context):
         text = update.message.text
 
         if text == '/start':
-            text = """Hello, human! I am Ares Peacemaker, the messenger between
-            you and the gods."""
+            text = """Hello, human! I am Ares Peacemaker, the messenger between you and the gods."""
+        else:
+            #text = str(gupy.referral_gained_ratio(text))
+            pass
 
         bot.sendMessage(chat_id=chat_id, text=text)
         logger.info('Message sent')
