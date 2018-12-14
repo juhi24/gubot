@@ -1,0 +1,24 @@
+{
+  "name": "gubot",
+  "description": "Serverless Python Telegram bot to access Gods Unchained API",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juhi24/gubot.git"
+  },
+  "keywords": [
+    "python",
+    "telegram",
+    "gods unchained",
+    "serverless"
+  ],
+  "author": "juhi24",
+  "license": "MIT",
+  "dependencies": {
+    "serverless-python-requirements": "^3.0.9"
+  },
+  "bugs": {
+    "url": "https://github.com/juhi24/gubot/issues"
+  },
+  "homepage": "https://github.com/juhi24/gubot"
+}
