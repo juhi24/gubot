@@ -1,10 +1,10 @@
 import json
 import telegram
-from telegram.ext import Dispatcher
+from telegram.ext import Dispatcher, CommandHandler
 import os
 import logging
 
-#import gupy
+import gupy
 
 
 # Logging is cool!
@@ -23,6 +23,24 @@ ERROR_RESPONSE = {
     'statusCode': 400,
     'body': json.dumps('Oops, something went wrong!')
 }
+
+
+def start_callback(bot, update):
+    greeting = 'Greetings, human! I am Ares Peacemaker, the messenger between you and the gods.'
+    update.message.reply_text(greeting)
+
+
+def version_callback(bot, update):
+    update.message.reply_text(telegram.__version__)
+
+
+def refratio_callback(bot, update, args):
+    lines = []
+    for arg in args:
+        ratio = gupy.referral_gained_ratio(arg)
+        lines.append('{addr}: {ratio:.2f}'.format(addr=arg, ratio=ratio))
+    reply = '\n'.join(lines)
+    update.message.reply_text(reply)
 
 
 def configure_telegram():
@@ -48,25 +66,20 @@ def webhook(event, context):
     """
 
     bot = configure_telegram()
+    dispatcher = Dispatcher(bot, None, workers=0)
+
+    dispatcher.add_handler(CommandHandler('start', start_callback))
+    dispatcher.add_handler(CommandHandler('version', version_callback))
+    dispatcher.add_handler(CommandHandler('refratio', refratio_callback, pass_args=True))
+
     logger.info('Event: {}'.format(event))
 
     if event.get('httpMethod') == 'POST' and event.get('body'):
         logger.info('Message received')
         update = telegram.Update.de_json(json.loads(event.get('body')), bot)
-        chat_id = update.message.chat.id
-        text = update.message.text
-
-        if text == '/start':
-            text = """Hello, human! I am Ares Peacemaker, the messenger between you and the gods."""
-        else:
-            #text = str(gupy.referral_gained_ratio(text))
-            pass
-
-        bot.sendMessage(chat_id=chat_id, text=text)
+        dispatcher.process_update(update)
         logger.info('Message sent')
-
         return OK_RESPONSE
-
     return ERROR_RESPONSE
 
 
@@ -85,5 +98,4 @@ def set_webhook(event, context):
 
     if webhook:
         return OK_RESPONSE
-
     return ERROR_RESPONSE
