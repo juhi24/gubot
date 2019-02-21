@@ -1,8 +1,9 @@
-service: serverless-telegram-bot
+service: gubot
 
 provider:
   name: aws
   runtime: python3.7
+  region: eu-north-1
   environment:
     TELEGRAM_TOKEN: ${file(./serverless.env.yml):TELEGRAM_TOKEN, ''}
 
