@@ -43,6 +43,12 @@ def refratio_callback(bot, update, args):
     update.message.reply_text(reply)
 
 
+def predict_callback(bot, update, args):
+    result = gupy.predict(args[0], args[1])
+    reply = 'Match propability is {:.1f}%.'.format(result*100)
+    update.message.reply_text(reply)
+
+
 def configure_telegram():
     """
     Configures the bot with a Telegram Token.
@@ -71,6 +77,7 @@ def webhook(event, context):
     dispatcher.add_handler(CommandHandler('start', start_callback))
     dispatcher.add_handler(CommandHandler('version', version_callback))
     dispatcher.add_handler(CommandHandler('refratio', refratio_callback, pass_args=True))
+    dispatcher.add_handler(CommandHandler('predict', predict_callback, pass_args=True))
 
     logger.info('Event: {}'.format(event))
 
