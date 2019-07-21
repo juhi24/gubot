@@ -45,7 +45,7 @@ def refratio_callback(bot, update, args):
 
 def predict_callback(bot, update, args):
     result = gupy.predict(args[0], args[1])
-    reply = 'Match propability is {:.1f}%.'.format(result*100)
+    reply = 'Constructed match propability is {:.1f}%.'.format(result*100)
     update.message.reply_text(reply)
 
 
