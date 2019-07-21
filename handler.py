@@ -44,8 +44,12 @@ def refratio_callback(bot, update, args):
 
 
 def predict_callback(bot, update, args):
-    result = gupy.predict(args[0], args[1])
-    reply = 'Constructed match propability is {:.1f}%.'.format(result*100)
+    """Reply Elo prediction result."""
+    player_id = args[0]
+    opponent_id = args[1]
+    result = gupy.predict(player_id, opponent_id)
+    reply_base = 'Propability of {} winning {} is {:.1f}%.'
+    reply = reply_base.format(player_id, opponent_id, result*100)
     update.message.reply_text(reply)
 
 
