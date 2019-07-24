@@ -53,6 +53,21 @@ def predict_callback(bot, update, args):
     update.message.reply_text(reply)
 
 
+def user_stats_callback(bot, update, args):
+    player_id = args[0]
+    ustats = gupy.user_stats(player_id)
+    reply_lines = ['Player {username} stats in constructed mode:',
+                  'W/L: {won_matches}/{lost_matches} = {wl}',
+                  'Rating: {rating}',
+                  'Rank level: {rank_level}',
+                  'Points: {win_points}W, {loss_points}L',
+                  'XP: {total_xp}, Level {xp_level}']
+    reply_base = '\n'.join(reply_lines)
+    ustats['wl'] = ustats['won_matches']/ustats['lost_matches']
+    reply = reply_base.format(**ustats)
+    update.message.reply_text(reply)
+
+
 def configure_telegram():
     """
     Configures the bot with a Telegram Token.
@@ -82,6 +97,7 @@ def webhook(event, context):
     dispatcher.add_handler(CommandHandler('version', version_callback))
     dispatcher.add_handler(CommandHandler('refratio', refratio_callback, pass_args=True))
     dispatcher.add_handler(CommandHandler('predict', predict_callback, pass_args=True))
+    dispatcher.add_handler(CommandHandler('stats', user_stats_callback, pass_args=True))
 
     logger.info('Event: {}'.format(event))
 
