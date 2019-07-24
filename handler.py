@@ -56,14 +56,18 @@ def predict_callback(bot, update, args):
 def user_stats_callback(bot, update, args):
     player_id = args[0]
     ustats = gupy.user_stats(player_id)
-    reply_lines = ['Player {username} stats in constructed mode:',
-                  'W/L: {won_matches}/{lost_matches} = {wl}',
-                  'Rating: {rating}',
-                  'Rank level: {rank_level}',
-                  'Points: {win_points}W, {loss_points}L',
-                  'XP: {total_xp}, Level {xp_level}']
+    reply_lines = ['Player {username} stats:',
+                  'Total W/L: {won_matches}/{lost_matches} = {wl:.3f};  won {wp}%',
+                  'XP: {total_xp}, level {xp_level}',
+                  'Constructed:',
+                  '  Rating: {rating}',
+                  '  Rank level: {rank_level}',
+                  '  Points: {win_points}W, {loss_points}L']
     reply_base = '\n'.join(reply_lines)
-    ustats['wl'] = ustats['won_matches']/ustats['lost_matches']
+    won = ustats['won_matches']
+    lost = ustats['lost_matches']
+    ustats['wl'] = won/lost
+    ustats['wp'] = won/(won+lost)*100
     reply = reply_base.format(**ustats)
     update.message.reply_text(reply)
 
