@@ -72,7 +72,7 @@ def user_stats_callback(bot, update, args):
     update.message.reply_text(reply)
 
 
-def gas_price_callback(bot, update, args):
+def gas_price_callback(bot, update):
     prices = gupy.gas_price()
     categories = ['fastest', 'fast', 'average', 'safeLow']
     reply_line_fmt = '{speed} ({wait} min): {gwei} Gwei'
