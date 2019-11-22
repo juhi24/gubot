@@ -72,6 +72,20 @@ def user_stats_callback(bot, update, args):
     update.message.reply_text(reply)
 
 
+def gas_price_callback(bot, update, args):
+    prices = gupy.gas_price()
+    categories = ['fastest', 'fast', 'average', 'safeLow']
+    reply_line_fmt = '{speed} ({wait} min): {gwei} Gwei'
+    reply_lines = []
+    for cat in categories:
+        line = reply_line_fmt.format(speed=cat,
+                                     wait=prices[cat+'Wait'],
+                                     gwei=prices[cat]/10)
+        reply_lines.append(line)
+    reply = '\n'.join(reply_lines)
+    update.message.reply_text(reply)
+
+
 def configure_telegram():
     """
     Configures the bot with a Telegram Token.
@@ -99,6 +113,7 @@ def webhook(event, context):
 
     dispatcher.add_handler(CommandHandler('start', start_callback))
     dispatcher.add_handler(CommandHandler('version', version_callback))
+    dispatcher.add_handler(CommandHandler('gasprice', gas_price_callback))
     dispatcher.add_handler(CommandHandler('refratio', refratio_callback, pass_args=True))
     dispatcher.add_handler(CommandHandler('predict', predict_callback, pass_args=True))
     dispatcher.add_handler(CommandHandler('stats', user_stats_callback, pass_args=True))
